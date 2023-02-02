@@ -6,28 +6,46 @@ package Telas;
 
 import Classes.Pessoa;
 import Classes.Tecnico;
+import java.awt.Cursor;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.io.*;
 
 /**
  *
  * @author felip
  */
 public class Tecnicos extends javax.swing.JFrame {
-    
-    static ArrayList<Tecnico> listaTecnicos;
-    String botão;
+    static ArrayList<Tecnico> listaTecnicos = new ArrayList<>();
+    private String botão;
     
     /**
      * Creates new form Tecnicos
      */
     public Tecnicos() {
         initComponents();
-        listaTecnicos = new ArrayList();
+        
+        File arquivo = new File("src/Dados/dadosTecnicos.txt");
+        
+        try {
+            FileReader fr = new FileReader(arquivo);
+            BufferedReader br = new BufferedReader(fr);
+            
+            while(br.ready()) {
+                String[] linha = br.readLine().split(";");
+                Tecnico tecnico = new Tecnico(linha[0], linha[1], linha[2], linha[3], Integer.parseInt(linha[4]), linha[5]);
+                listaTecnicos.add(tecnico);
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possível abrir o arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }       
+        
+        carregarTabelaTecnicos();
         
         setLocationRelativeTo(null);
         
@@ -52,7 +70,12 @@ public class Tecnicos extends javax.swing.JFrame {
 
     //Carregar a tabela com tecnicos da lista
     public void carregarTabelaTecnicos(){
-        DefaultTableModel modelo = new DefaultTableModel(new Object[] {"Nome", "Sobrenome", "CPF", "Idade", "Sexo","Data Nascimento"},0);
+        DefaultTableModel modelo = new DefaultTableModel(new Object[] {"Nome", "Sobrenome", "CPF", "Idade", "Sexo","Data Nascimento"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         
         for(int i=0;i<listaTecnicos.size();i++){
             Object linha[] = new Object[] {listaTecnicos.get(i).getNome(),
@@ -204,6 +227,11 @@ public class Tecnicos extends javax.swing.JFrame {
 
         btnNovoTecnico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/adicionar.png"))); // NOI18N
         btnNovoTecnico.setText("Novo");
+        btnNovoTecnico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnNovoTecnicoMouseEntered(evt);
+            }
+        });
         btnNovoTecnico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNovoTecnicoActionPerformed(evt);
@@ -212,6 +240,11 @@ public class Tecnicos extends javax.swing.JFrame {
 
         btnSalvarTecnico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Salvar.png"))); // NOI18N
         btnSalvarTecnico.setText("Salvar");
+        btnSalvarTecnico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnSalvarTecnicoMouseEntered(evt);
+            }
+        });
         btnSalvarTecnico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalvarTecnicoActionPerformed(evt);
@@ -220,6 +253,11 @@ public class Tecnicos extends javax.swing.JFrame {
 
         btnCancelarTecnico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Cancelar.png"))); // NOI18N
         btnCancelarTecnico.setText("Cancelar");
+        btnCancelarTecnico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnCancelarTecnicoMouseEntered(evt);
+            }
+        });
         btnCancelarTecnico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarTecnicoActionPerformed(evt);
@@ -228,6 +266,11 @@ public class Tecnicos extends javax.swing.JFrame {
 
         btnEditarTecnico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/editarCliente.png"))); // NOI18N
         btnEditarTecnico.setText("Editar");
+        btnEditarTecnico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnEditarTecnicoMouseEntered(evt);
+            }
+        });
         btnEditarTecnico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarTecnicoActionPerformed(evt);
@@ -236,6 +279,11 @@ public class Tecnicos extends javax.swing.JFrame {
 
         btnExcluirTecnico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/excluirCliente.png"))); // NOI18N
         btnExcluirTecnico.setText("Excluir");
+        btnExcluirTecnico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnExcluirTecnicoMouseEntered(evt);
+            }
+        });
         btnExcluirTecnico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirTecnicoActionPerformed(evt);
@@ -244,6 +292,11 @@ public class Tecnicos extends javax.swing.JFrame {
 
         btnPesquisarTecnico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Pesquisar.png"))); // NOI18N
         btnPesquisarTecnico.setText("Pesquisar");
+        btnPesquisarTecnico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnPesquisarTecnicoMouseEntered(evt);
+            }
+        });
         btnPesquisarTecnico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPesquisarTecnicoActionPerformed(evt);
@@ -283,6 +336,11 @@ public class Tecnicos extends javax.swing.JFrame {
         btnSairTecnico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/sair.png"))); // NOI18N
         btnSairTecnico.setText("Sair");
         btnSairTecnico.setToolTipText("Sair da tela de Técnicos");
+        btnSairTecnico.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnSairTecnicoMouseEntered(evt);
+            }
+        });
         btnSairTecnico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSairTecnicoActionPerformed(evt);
@@ -352,6 +410,7 @@ public class Tecnicos extends javax.swing.JFrame {
              String diaTecnico = String.valueOf(spnDiaTecnicos.getValue());
              String mesTecnico = String.valueOf(spnMesTecnicos.getValue());
              String anoTecnico = String.valueOf(spnAnoTecnicos.getValue());
+             
              if(Integer.parseInt(diaTecnico)<10){
                  diaTecnico="0"+diaTecnico;
              }
@@ -370,11 +429,47 @@ public class Tecnicos extends javax.swing.JFrame {
              if(botão.equals("novo")){
                  Tecnico tecnico = new Tecnico(nome,sobrenome,cpf,sexo,idade,dataNascimento);
                  listaTecnicos.add(tecnico);
-                 JOptionPane.showMessageDialog(null, "Tecnico cadastrado com sucesso", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
+                 File arquivo = new File("src/Dados/dadosTecnicos.txt");
+                 try {
+                     FileWriter fw = new FileWriter(arquivo, true);
+                     BufferedWriter bw = new BufferedWriter(fw);
+                     bw.write(nome + ";" + sobrenome + ";" + cpf + ";" + sexo + ";" + idade + ";" + dataNascimento);
+                     bw.newLine();
+                     bw.close();
+                 } catch (IOException ex) {
+                     JOptionPane.showMessageDialog(null, "Não foi possível abrir o arquivo.", "Erro", JOptionPane.ERROR_MESSAGE);
+                     return;
+                 }
+                 JOptionPane.showMessageDialog(null, "Técnico cadastrado com sucesso", "Mensagem", JOptionPane.INFORMATION_MESSAGE);
              }
              else if(botão.equals("editar")){
-                 int index = tblTecnicos.getSelectedRow();
-                 
+                int index = tblTecnicos.getSelectedRow();
+                File arquivo = new File("src/Dados/dadosTecnicos.txt");
+                try { 
+                ArrayList<String> temp = new ArrayList<>();
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+                for(int j = 0; br.ready(); j++) {
+                    if(j != index) {
+                        String linha = br.readLine();
+                        temp.add(linha);
+                    } else {
+                        br.readLine();
+                        temp.add(nome + ";" + sobrenome + ";" + cpf + ";" + sexo + ";" + idade + ";" + dataNascimento);
+                    }
+                }
+                br.close();
+                FileWriter fw = new FileWriter(arquivo);
+                BufferedWriter bw = new BufferedWriter(fw);
+                for(String linha : temp) {
+                    bw.write(linha);
+                    bw.newLine();
+                }
+                bw.close();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, "Não foi posssível abrir o arquivo.", "Erro", 0);
+                return;
+            }
                  listaTecnicos.get(index).setNome(nome);
                  listaTecnicos.get(index).setSobrenome(sobrenome);
                  listaTecnicos.get(index).setCpf(cpf);
@@ -544,41 +639,84 @@ public class Tecnicos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarTecnicoActionPerformed
 
     private void btnExcluirTecnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirTecnicoActionPerformed
-        int index = tblTecnicos.getSelectedRow();
+        int j = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir esse tecnico?", "Atenção!", JOptionPane.WARNING_MESSAGE);
         
-        if(index>=0 && index<listaTecnicos.size()){
-            listaTecnicos.remove(index);
-        }
-        
-        carregarTabelaTecnicos();
-        
-        //Limpar os campos
-        txtNomeTecnicos.setText("");
-        txtSobrenomeTecnicos.setText("");
-        txtCPFTecnicos.setText("");
-        txtSexoTecnicos.setText("");
-        spnDiaTecnicos.setValue(1);
-        spnMesTecnicos.setValue(1);
-        spnAnoTecnicos.setValue(2023);
-        
+        if(j==0){
+            int index = tblTecnicos.getSelectedRow();
 
-        //Habilitar ou desabiltiar botões
-        btnNovoTecnico.setEnabled(true);
-        btnSalvarTecnico.setEnabled(false);
-        btnCancelarTecnico.setEnabled(false);
-        btnEditarTecnico.setEnabled(false);
-        btnExcluirTecnico.setEnabled(false);
-        btnPesquisarTecnico.setEnabled(true);
-        btnOKTecnico.setEnabled(false);
-        
-        //Habilitar ou desabilitar campos de texto
-        txtNomeTecnicos.setEnabled(false);
-        txtSobrenomeTecnicos.setEnabled(false);
-        txtCPFTecnicos.setEnabled(false);
-        txtSexoTecnicos.setEnabled(false);
-        spnDiaTecnicos.setEnabled(false);
-        spnMesTecnicos.setEnabled(false);
-        spnAnoTecnicos.setEnabled(false);
+            String tecnico = listaTecnicos.get(index).getNome() + ";" + listaTecnicos.get(index).getSobrenome() + ";" + listaTecnicos.get(index).getCpf() + ";" + listaTecnicos.get(index).getSexo() + ";" + listaTecnicos.get(index).getIdade() + ";" + listaTecnicos.get(index).getDataNascimento();
+
+            File arquivo = new File("src/Dados/dadosTecnicos.txt");
+
+            try{
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+
+                String linha = br.readLine();
+                ArrayList<String> salvar = new ArrayList();
+
+                while(linha!= null){
+                    if(linha.equals(tecnico) == false  ){
+                        salvar.add(linha);
+                    }
+                    linha = br.readLine();
+                }
+
+
+                br.close();
+                fr.close();
+                FileWriter fw2 = new FileWriter(arquivo,true);
+                fw2.close();
+
+                FileWriter fw = new FileWriter(arquivo);
+                BufferedWriter bw = new BufferedWriter(fw);
+
+                for(int i=0;i<salvar.size();i++){
+                    bw.write(salvar.get(i));
+                    bw.newLine();
+                }
+                fw.close();
+                bw.close();
+
+            }catch(IOException  ex){
+                JOptionPane.showMessageDialog(null, "Não foi posssível abrir o arquivo.", "Erro", 0);
+                return;
+            }
+
+            if(index>=0 && index<listaTecnicos.size()){
+                listaTecnicos.remove(index);
+            }
+
+            carregarTabelaTecnicos();
+
+            //Limpar os campos
+            txtNomeTecnicos.setText("");
+            txtSobrenomeTecnicos.setText("");
+            txtCPFTecnicos.setText("");
+            txtSexoTecnicos.setText("");
+            spnDiaTecnicos.setValue(1);
+            spnMesTecnicos.setValue(1);
+            spnAnoTecnicos.setValue(2023);
+
+
+            //Habilitar ou desabiltiar botões
+            btnNovoTecnico.setEnabled(true);
+            btnSalvarTecnico.setEnabled(false);
+            btnCancelarTecnico.setEnabled(false);
+            btnEditarTecnico.setEnabled(false);
+            btnExcluirTecnico.setEnabled(false);
+            btnPesquisarTecnico.setEnabled(true);
+            btnOKTecnico.setEnabled(false);
+
+            //Habilitar ou desabilitar campos de texto
+            txtNomeTecnicos.setEnabled(false);
+            txtSobrenomeTecnicos.setEnabled(false);
+            txtCPFTecnicos.setEnabled(false);
+            txtSexoTecnicos.setEnabled(false);
+            spnDiaTecnicos.setEnabled(false);
+            spnMesTecnicos.setEnabled(false);
+            spnAnoTecnicos.setEnabled(false);
+        }
     }//GEN-LAST:event_btnExcluirTecnicoActionPerformed
 
     private void btnPesquisarTecnicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarTecnicoActionPerformed
@@ -665,6 +803,34 @@ public class Tecnicos extends javax.swing.JFrame {
             txtCPFTecnicos.requestFocus();
         }
     }//GEN-LAST:event_btnOKTecnicoActionPerformed
+
+    private void btnNovoTecnicoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNovoTecnicoMouseEntered
+        btnNovoTecnico.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btnNovoTecnicoMouseEntered
+
+    private void btnSalvarTecnicoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSalvarTecnicoMouseEntered
+        btnSalvarTecnico.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btnSalvarTecnicoMouseEntered
+
+    private void btnCancelarTecnicoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarTecnicoMouseEntered
+        btnCancelarTecnico.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btnCancelarTecnicoMouseEntered
+
+    private void btnEditarTecnicoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarTecnicoMouseEntered
+        btnEditarTecnico.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btnEditarTecnicoMouseEntered
+
+    private void btnExcluirTecnicoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExcluirTecnicoMouseEntered
+        btnExcluirTecnico.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btnExcluirTecnicoMouseEntered
+
+    private void btnPesquisarTecnicoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesquisarTecnicoMouseEntered
+        btnPesquisarTecnico.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btnPesquisarTecnicoMouseEntered
+
+    private void btnSairTecnicoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSairTecnicoMouseEntered
+        btnSairTecnico.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btnSairTecnicoMouseEntered
 
     /**
      * @param args the command line arguments

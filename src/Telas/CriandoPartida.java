@@ -4,6 +4,8 @@ public class CriandoPartida extends javax.swing.JFrame {
 
     public CriandoPartida() {
         initComponents();
+        
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -40,7 +42,7 @@ public class CriandoPartida extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPartidas = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Partidas");
         setAutoRequestFocus(false);
         setBackground(new java.awt.Color(0, 153, 102));
